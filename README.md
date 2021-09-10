@@ -18,6 +18,9 @@ The code is modified from Retinaface code by [biubug6/Pytorch_Retinaface](https:
 
 3. Codes are based on Python 3
 
+## Weights
+You can find pretrain model and trained model [here](https://drive.google.com/drive/folders/1V3yXelGzg0Ce7uzLIuXEPjavZ4ghv2Ae?usp=sharing) or [here](https://drive.google.com/drive/folders/1oZRSG0ZegbVkVwUd8wUIQx8W7yfZ_ki1). 
+
 ## Testing
 1. python main.py
 
