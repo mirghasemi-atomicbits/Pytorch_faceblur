@@ -1,1 +1,4 @@
-weights/Resnet50_Final.pth
+weights/**
+videos/**
+.cache/**
+__pycache__

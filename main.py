@@ -97,6 +97,7 @@ if __name__ == '__main__':
     # testing begin
     for i, img_name in enumerate(test_dataset):
         image_path = img_name
+        print('image file: ' + image_path)
         img_raw = cv2.imread(image_path, cv2.IMREAD_COLOR)
         img = np.float32(img_raw)
 
@@ -204,7 +205,7 @@ if __name__ == '__main__':
 
                 if args.blur:
                     face_image = img_raw[b[1]:b[3],b[0]:b[2]]
-                    face_image = cv2.GaussianBlur(face_image, (args.kernel_size,args.kernel_size), 0)
+                    face_image = cv2.GaussianBlur(face_image, (args.kernel_size,args.kernel_size), 100) # cv2.blur(face_image, (51,51)) 
                     img_raw[b[1]:b[3],b[0]:b[2]] = face_image
                 else:
 
