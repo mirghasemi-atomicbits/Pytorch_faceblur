@@ -110,7 +110,7 @@ if __name__ == '__main__':
         video_out_filename = video_in_out[1]
 
         dirname = os.path.dirname(video_out_filename)
-        if not os.path.isdir(dirname):
+        if dirname and not os.path.isdir(dirname):
             os.makedirs(dirname)
 
         cap = cv2.VideoCapture(video_in_filename)
