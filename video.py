@@ -23,12 +23,14 @@ parser.add_argument('--network', default='resnet50', help='Backbone network mobi
 parser.add_argument('--input_file', type=str, help='input video file')
 parser.add_argument('--output_file', type=str, help='output video file')
 parser.add_argument('--cpu', action="store_true", default=False, help='Use cpu inference')
-parser.add_argument('--kernel_size',default=25, help="kernel size for gaussian blur, more the kernel size, more agressive blur")
+parser.add_argument('--blur_strength', help="use a blur indicator that is relative to each face pixel size, the larger the number, the more agressive blur, typically 0.3, 0.5 or 0.6 are good numbers")
+parser.add_argument('--kernel_size', help="use a fixed kernel size for gaussian blur, the larger the kernel size, the more agressive blur")
 parser.add_argument('--confidence_threshold', default=0.02, type=float, help='confidence_threshold')
 parser.add_argument('--top_k', default=5000, type=int, help='top_k')
 parser.add_argument('--nms_threshold', default=0.4, type=float, help='nms_threshold')
 parser.add_argument('--keep_top_k', default=750, type=int, help='keep_top_k')
 parser.add_argument('--vis_thres', default=0.5, type=float, help='visualization_threshold')
+parser.add_argument('--load_model_only', default=False, help='Just let RetiFace load its internal model and then exit.')
 args = parser.parse_args()
 
 
@@ -76,13 +78,21 @@ if __name__ == '__main__':
         cfg = cfg_mnet
     elif args.network == "resnet50":
         cfg = cfg_re50
-    args.kernel_size= int(args.kernel_size)
+    
+    relative_kernel = True
+    if args.blur_strength:
+        blur_strength = np.float64(args.blur_strength)
+    if args.kernel_size:
+        kernel = np.int64(args.kernel_size)
+        relative_kernel = False
 
     # net and model
     net = RetinaFace(cfg=cfg, phase = 'test')
     net = load_model(net, args.trained_model, args.cpu)
     net.eval()
     print('Finished loading model!')
+    if args.load_model_only:
+        exit(0)
     # print(net)
     cudnn.benchmark = True
     device = torch.device("cpu" if args.cpu else "cuda")
@@ -185,9 +195,10 @@ if __name__ == '__main__':
                 # to do: find out how the kernel size needs to scale for blurring larger boxes 
                 # using the same kernel size for all sizes of boxes gives a visually different blur on the faces (smaller boxes need less blur)
                 if face_image.any():
-                    kernel = np.int64(np.max(face_image.shape) * 25 / 40)
-                    if (kernel % 2) == 0:
-                        kernel += 1
+                    if relative_kernel:
+                        kernel = np.int64(np.max(face_image.shape) * blur_strength)    
+                        if (kernel % 2) == 0:
+                            kernel += 1
                     face_image = cv2.GaussianBlur(face_image, (kernel, kernel), 0) 
                     # face_image = cv2.GaussianBlur(face_image, (args.kernel_size,args.kernel_size), 0) 
                     frame[b[1]:b[3],b[0]:b[2]] = face_image
