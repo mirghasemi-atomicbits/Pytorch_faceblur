@@ -23,14 +23,14 @@ parser.add_argument('--network', default='resnet50', help='Backbone network mobi
 parser.add_argument('--input_file', type=str, help='input video file')
 parser.add_argument('--output_file', type=str, help='output video file')
 parser.add_argument('--cpu', action="store_true", default=False, help='Use cpu inference')
-parser.add_argument('--blur_strength', help="use a blur indicator that is relative to each face pixel size, the larger the number, the more agressive blur, typically 0.3, 0.5 or 0.6 are good numbers")
+parser.add_argument('--blur_strength', default=0.4, help="use a blur indicator that is relative to each face pixel size, the larger the number, the more agressive blur, typically 0.3, 0.5 or 0.6 are good numbers")
 parser.add_argument('--kernel_size', help="use a fixed kernel size for gaussian blur, the larger the kernel size, the more agressive blur")
 parser.add_argument('--confidence_threshold', default=0.02, type=float, help='confidence_threshold')
 parser.add_argument('--top_k', default=5000, type=int, help='top_k')
 parser.add_argument('--nms_threshold', default=0.4, type=float, help='nms_threshold')
 parser.add_argument('--keep_top_k', default=750, type=int, help='keep_top_k')
 parser.add_argument('--vis_thres', default=0.5, type=float, help='visualization_threshold')
-parser.add_argument('--load_model_only', default=False, help='Just let RetiFace load its internal model and then exit.')
+parser.add_argument('--load_model_only', action="store_true", default=False, help='Just let RetiFace load its internal model and then exit.')
 args = parser.parse_args()
 
 
