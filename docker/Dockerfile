@@ -1,6 +1,5 @@
-FROM nvidia/cuda:11.4.1-cudnn8-devel-ubuntu20.04
-# FROM nvidia/cuda:11.4.1-cudnn8-devel-ubuntu18.04
-# FROM nvidia/cuda:10.1-cudnn7-devel
+FROM nvidia/cuda:11.4.1-cudnn8-runtime-ubuntu20.04
+# FROM nvidia/cuda:11.4.1-cudnn8-devel-ubuntu20.04
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
